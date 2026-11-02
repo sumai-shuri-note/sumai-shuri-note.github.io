@@ -463,7 +463,7 @@ export function buildArticlePage(article, { config, links, siteUrl }) {
     jsonLd: [articleLd, faqJsonLd(article.faq), breadcrumb],
   };
   const html = renderLayout({ config, siteUrl, page });
-  return { html, outFile: path.join('articles', article.slug, 'index.html'), charCount: countChars(stripTags(bodyHtml) + article.title) };
+  return { html, outFile: path.join('articles', article.slug, 'index.html'), charCount: countChars(stripTags(bodyHtml.replace(/<aside[\s\S]*?<\/aside>/g, "")) + article.title) };
 }
 
 export function renderArticleList(articles, siteUrl) {
