@@ -196,5 +196,29 @@
     "kind": "物販",
     "url": "",
     "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "haikan-hoon-zai": {
+    "label": "配管用の保温材",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "hoon-tape": {
+    "label": "保温テープ",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "towel": {
+    "label": "タオル",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "kyutouki-koukan": {
+    "label": "給湯器の交換・修理の業者（一括見積もり）",
+    "kind": "業者紹介",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
   }
 }
