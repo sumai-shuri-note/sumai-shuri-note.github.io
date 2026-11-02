@@ -450,8 +450,9 @@ ${h1}
 ${page.bodyHtml}
 </article>
 </main>
+${config.localDesk && config.localDesk.url ? `<a class="sticky-line" href="${escapeHtml(config.localDesk.url)}" rel="noopener" target="_blank">${escapeHtml(config.localDesk.button)}</a>` : ''}
 <footer class="site-footer">
-<div class="author-box">著者：<a href="${aboutUrl}">${escapeHtml(config.author.line)}</a>。会社名は出しません。実際に現場で使った道具の写真（顔・声なし）があれば入れます。</div>
+<div class="author-box">著者：<a href="${aboutUrl}">${escapeHtml(config.author.line)}</a>。配管・内装・外壁・害獣駆除の現場で働く施工チームが書いています。</div>
 <p>${escapeHtml(config.prBanner)}。${escapeHtml(config.priceNote)}</p>
 ${(config.sameAs||[]).length ? `<p>${config.sameAs.map((u) => `<a href="${escapeHtml(u)}" rel="me noopener" target="_blank">${u.includes("tiktok") ? "TikTok" : "YouTube"}</a>`).join(' ')}</p>` : ''}
 <p>© ${escapeHtml(config.siteName)}</p>
