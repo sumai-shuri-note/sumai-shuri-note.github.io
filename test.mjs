@@ -159,7 +159,7 @@ test(`記事の本文は ${CHAR_MIN}〜${CHAR_MAX} 文字`, () => {
     const m = html.match(/<article>([\s\S]*?)<\/article>/);
     assert.ok(m, `${a.slug}: article 要素`);
     // 著者・日付の行は本文に数えない。
-    const body = m[1].replace(/<p class="meta">[\s\S]*?<\/p>/, '');
+    const body = m[1].replace(/<p class="meta">[\s\S]*?<\/p>/, '').replace(/<aside[\s\S]*?<\/aside>/g, ''); // 共通の枠（相談・信頼）は数えない
     const n = countChars(stripTags(body));
     assert.ok(n >= CHAR_MIN && n <= CHAR_MAX, `${a.slug}: ${n} 文字（${CHAR_MIN}〜${CHAR_MAX} の範囲）`);
   }
