@@ -124,6 +124,10 @@
         "mado-reform-gyosha",
         "reform-ikkatsu",
         "gaiheki-tosou-hikaku"
+      ],
+      "外壁": [
+        "gaiheki-tosou-hikaku",
+        "reform-ikkatsu"
       ]
     }
   }

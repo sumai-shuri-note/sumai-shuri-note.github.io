@@ -235,5 +235,11 @@
     "url": "https://px.a8.net/svt/ejp?a8mat=4BGCEZ+75SPPU+410U+60OXE",
     "note": "A8 s00000018795001 提携2026-11-03",
     "pixel": "https://www15.a8.net/0.gif?a8mat=4BGCEZ+75SPPU+410U+60OXE"
+  },
+  "crack-scale": {
+    "label": "クラックスケール",
+    "kind": "物販",
+    "url": "",
+    "note": "物販。Amazon/楽天の提携後にurl"
   }
 }
