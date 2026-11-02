@@ -138,7 +138,7 @@ export function renderLink(slug, links, config) {
   if (!entry) throw new Error(`links.json に無い札です: [[link:${slug}]]`);
   const label = escapeHtml(entry.label);
   if (entry.url) {
-    return `<a href="${escapeHtml(entry.url)}" rel="sponsored nofollow noopener" target="_blank">${label}</a>`;
+    return `<a href="${escapeHtml(entry.url)}" rel="sponsored nofollow noopener" target="_blank">${label}</a><small class="ad-mark">［広告］</small>`;
   }
   return `<span class="link-pending" data-link="${escapeHtml(slug)}">${label}<small>${escapeHtml(config.linkPendingText)}</small></span>`;
 }

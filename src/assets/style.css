@@ -34,9 +34,11 @@ img { max-width: 100%; height: auto; display: block; }
 .pr-banner {
   margin: 0;
   padding: 0.5rem 1rem;
-  background: var(--paper-2);
-  color: var(--muted);
-  font-size: 0.8rem;
+  background: #fff4d6;
+  color: #3d2c00;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-bottom: 2px solid #e0b84a;
   text-align: center;
   border-bottom: 1px solid var(--line);
 }
@@ -155,3 +157,4 @@ figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 
 .local-desk-title{font-size:1.15em;color:#1f6f43}.local-desk-reply{font-size:.9em;color:#555}.local-desk-monitor{border-top:1px dashed #1f6f43;padding-top:8px;font-size:.92em}
 .trust-box{border:1px solid #ccc;border-radius:10px;padding:12px 16px;margin:24px 0;background:#fafafa}.trust-box h2{font-size:1.05em;margin:0 0 6px}.trust-box li{margin:4px 0}
+.ad-mark{margin-left:4px;font-size:.8em;color:#8a5a00;font-weight:600}
