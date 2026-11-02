@@ -1,0 +1,146 @@
+{
+  "uchimado-kit": {
+    "label": "内窓キット（樹脂フレームと中空ポリカ板のセット）",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら、商品ページの計測つきリンクを url に入れる"
+  },
+  "polyca-board": {
+    "label": "中空ポリカーボネート板（4mm）",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "convex": {
+    "label": "コンベックス（金属のメジャー）",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "cutter-large": {
+    "label": "大型カッター（替え刃つき）",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "ketsuro-wiper": {
+    "label": "結露取りワイパー",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "ketsuro-tape": {
+    "label": "結露吸水テープ",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "joshitsu-zai": {
+    "label": "置き型の除湿剤",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "ondoshitsudo-kei": {
+    "label": "温湿度計",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "circulator": {
+    "label": "サーキュレーター",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "dannetsu-sheet": {
+    "label": "窓用断熱シート（気泡つき）",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "sukima-tape": {
+    "label": "すきまテープ",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "kirifuki": {
+    "label": "霧吹き",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "mado-film": {
+    "label": "窓用フィルム（断熱・飛散防止）",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "film-tool-set": {
+    "label": "フィルム施工の道具セット（スキージー・霧吹き・カッター）",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "sash-tokuruma": {
+    "label": "サッシの戸車",
+    "kind": "物販",
+    "url": "",
+    "note": "戸車は型番ごとに違う。記事では「型番を控えてから買う」と書く"
+  },
+  "silicone-spray": {
+    "label": "シリコンスプレー",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "mado-reform-gyosha": {
+    "label": "内窓・窓リフォームの見積もり比較（紹介先）",
+    "kind": "業者紹介",
+    "url": "",
+    "note": "高単価案件。地域の決まりは行動書 3.1 を見る"
+  },
+  "glass-film-gyosha": {
+    "label": "ガラスフィルム施工の業者紹介",
+    "kind": "業者紹介",
+    "url": "",
+    "note": ""
+  },
+  "sash-shuri-gyosha": {
+    "label": "サッシ・窓の修理業者の紹介",
+    "kind": "業者紹介",
+    "url": "",
+    "note": ""
+  },
+  "hakubishin-kihizai": {
+    "label": "ハクビシン用の忌避剤（置くタイプ・まくタイプ）",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "led-sensor-light": {
+    "label": "LED センサーライト（電池式・太陽光式）",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "kanaami": {
+    "label": "金網と結束バンド（入口を塞ぐ用）",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "head-light": {
+    "label": "ヘッドライト",
+    "kind": "物販",
+    "url": "",
+    "note": ""
+  },
+  "gaiju-kujo-gyosha": {
+    "label": "害獣駆除の業者紹介",
+    "kind": "業者紹介",
+    "url": "",
+    "note": "高単価案件。地域の決まりは行動書 3.1 を見る"
+  }
+}

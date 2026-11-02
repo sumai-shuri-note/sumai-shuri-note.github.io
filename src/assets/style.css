@@ -1,0 +1,146 @@
+/* 現場の道具ノート — 携帯優先の最小の見た目。外部フォント・外部CSSは使わない。 */
+:root {
+  --ink: #1e2328;
+  --muted: #5b6670;
+  --line: #d9dee3;
+  --paper: #ffffff;
+  --paper-2: #f4f6f8;
+  --accent: #1f5f8b;
+  --accent-ink: #ffffff;
+  --diy: #e9f3ea;
+  --diy-line: #7fae86;
+  --hire: #fff4e5;
+  --hire-line: #d9a05b;
+  --note: #f7f2e8;
+  --maxw: 44rem;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", Meiryo, sans-serif;
+  font-size: 1rem;
+  line-height: 1.85;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+a { color: var(--accent); text-underline-offset: 0.15em; }
+a:hover { text-decoration-thickness: 2px; }
+img { max-width: 100%; height: auto; display: block; }
+
+/* 広告表記（全ページの最上部） */
+.pr-banner {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background: var(--paper-2);
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+
+/* 頭 */
+.site-header {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0.9rem 1rem 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1rem;
+}
+.site-header .brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.site-header nav a { font-size: 0.9rem; margin-right: 0.8rem; }
+.tagline { margin: 0 0 0.5rem; color: var(--muted); font-size: 0.9rem; }
+
+/* 本文の幅 */
+main { max-width: var(--maxw); margin: 0 auto; padding: 0.5rem 1rem 2rem; }
+h1 { font-size: 1.5rem; line-height: 1.4; margin: 0.6rem 0 0.8rem; }
+h2 { font-size: 1.2rem; line-height: 1.4; margin: 2rem 0 0.6rem; padding-bottom: 0.3rem; border-bottom: 2px solid var(--line); }
+h3 { font-size: 1.05rem; margin: 1.4rem 0 0.4rem; }
+p { margin: 0 0 1rem; }
+ul, ol { padding-left: 1.4rem; margin: 0 0 1rem; }
+li { margin-bottom: 0.3rem; }
+hr { border: 0; border-top: 1px solid var(--line); margin: 1.5rem 0; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 1rem; font-size: 0.95rem; }
+th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+th { background: var(--paper-2); }
+
+/* 著者・日付 */
+.meta { color: var(--muted); font-size: 0.85rem; margin: 0 0 1.2rem; }
+.meta span { display: inline-block; margin-right: 1rem; }
+.lead { font-size: 1.05rem; }
+
+/* 二択の枠 */
+.choice { padding: 0.8rem 1rem; border-radius: 6px; margin: 0 0 1.2rem; }
+.choice h2 { margin-top: 0.2rem; border-bottom-color: transparent; }
+.choice-diy { background: var(--diy); border-left: 5px solid var(--diy-line); }
+.choice-hire { background: var(--hire); border-left: 5px solid var(--hire-line); }
+.hitokoto { background: var(--note); padding: 0.8rem 1rem; border-radius: 6px; margin: 0 0 1.2rem; }
+.hitokoto h2 { margin-top: 0.2rem; border-bottom-color: transparent; }
+.price-note { color: var(--muted); font-size: 0.85rem; border-top: 1px dashed var(--line); padding-top: 0.6rem; }
+
+/* リンク（計測つき・準備中） */
+a[rel~="sponsored"]::after { content: " ↗"; font-size: 0.8em; }
+.link-pending { color: var(--muted); }
+.link-pending::after { content: ""; }
+
+/* 写真の枠（準備中） */
+figure { margin: 0 0 1.2rem; }
+figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+.photo-box {
+  border: 2px dashed var(--line);
+  color: var(--muted);
+  text-align: center;
+  padding: 2rem 1rem;
+  background: var(--paper-2);
+  border-radius: 6px;
+}
+
+/* FAQ */
+.faq h3 { margin-top: 1rem; }
+.faq h3::before { content: "Q. "; color: var(--accent); }
+.faq p::before { content: "A. "; color: var(--muted); }
+
+/* 記事一覧 */
+.article-list { list-style: none; padding: 0; }
+.article-list li { border-bottom: 1px solid var(--line); padding: 0.7rem 0; margin: 0; }
+.article-list a { font-weight: 600; text-decoration: none; }
+.article-list a:hover { text-decoration: underline; }
+.article-list .desc { display: block; color: var(--muted); font-size: 0.9rem; margin-top: 0.2rem; }
+.article-list .date { color: var(--muted); font-size: 0.8rem; }
+.cluster-tag { display: inline-block; font-size: 0.75rem; color: var(--accent); border: 1px solid var(--accent); border-radius: 3px; padding: 0 0.4rem; margin-right: 0.4rem; }
+
+/* 脚 */
+.site-footer {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 1.2rem 1rem 2.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.site-footer p { margin: 0 0 0.5rem; }
+.author-box { background: var(--paper-2); padding: 0.7rem 0.9rem; border-radius: 6px; margin-bottom: 0.8rem; }
+
+/* 広い画面 */
+@media (min-width: 40rem) {
+  body { font-size: 1.05rem; }
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.3rem; }
+  .site-header { padding-top: 1.4rem; }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8ebee; --muted: #a2abb3; --line: #3a434b; --paper: #15191d; --paper-2: #1f252b;
+    --accent: #7fb7e2; --diy: #1d2d20; --diy-line: #6f9c76; --hire: #332a1c; --hire-line: #c48c43; --note: #2a2620;
+  }
+}
+@media print { .pr-banner, .site-header nav { display: none; } }
