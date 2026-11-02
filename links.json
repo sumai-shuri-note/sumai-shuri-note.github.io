@@ -138,10 +138,11 @@
     "note": ""
   },
   "gaiju-kujo-gyosha": {
-    "label": "害獣駆除の業者紹介",
+    "label": "害獣駆除110番（全国の害獣駆除業者に見積もり依頼）",
     "kind": "業者紹介",
-    "url": "",
-    "note": "高単価案件。地域の決まりは行動書 3.1 を見る"
+    "url": "https://px.a8.net/svt/ejp?a8mat=4BGCEZ+83QF76+39GM+ZQ80I",
+    "note": "A8 s00000015223006 提携2026-11-03",
+    "pixel": "https://www15.a8.net/0.gif?a8mat=4BGCEZ+83QF76+39GM+ZQ80I"
   },
   "kunen-kihizai": {
     "label": "燻煙式のネズミ忌避剤",
@@ -168,10 +169,11 @@
     "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
   },
   "nezumi-kujo-gyosha": {
-    "label": "ネズミ駆除の業者（一括見積もり・紹介）",
+    "label": "ハウスプロテクト（再発防止に力を入れた害獣駆除）",
     "kind": "業者紹介",
-    "url": "",
-    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+    "url": "https://px.a8.net/svt/ejp?a8mat=4BGCEZ+84BUSY+4QDW+5YRHE",
+    "note": "A8 s00000022082001 提携2026-11-03",
+    "pixel": "https://www12.a8.net/0.gif?a8mat=4BGCEZ+84BUSY+4QDW+5YRHE"
   },
   "shinkuu-pipe-cleaner": {
     "label": "真空式パイプクリーナー",
@@ -228,9 +230,10 @@
     "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
   },
   "gaiheki-tosou-hikaku": {
-    "label": "外壁塗装の一括見積もり・比較",
+    "label": "ヌリカエ（外壁塗装の適正価格と業者の比較）",
     "kind": "業者紹介",
-    "url": "",
-    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+    "url": "https://px.a8.net/svt/ejp?a8mat=4BGCEZ+75SPPU+410U+60OXE",
+    "note": "A8 s00000018795001 提携2026-11-03",
+    "pixel": "https://www15.a8.net/0.gif?a8mat=4BGCEZ+75SPPU+410U+60OXE"
   }
 }
