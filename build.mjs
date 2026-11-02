@@ -173,10 +173,20 @@ export function renderDesk(kind, config) {
   const k = d[kind];
   if (!k) throw new Error(`[[desk:${kind}]] は general か pest です`);
   if (!/^https:\/\//.test(d.url)) throw new Error('localDesk.url は https で始めてください');
-  return `<aside class="local-desk"><p class="local-desk-area"><strong>${escapeHtml(k.area)}の方へ</strong>（${escapeHtml(k.areaNote)}）</p>`
-    + `<p>${escapeHtml(d.who)}が、直接うかがって見ます。記事を書いている編集部と同じ運営元です。</p>`
+  return `<aside class="local-desk"><p class="local-desk-title"><strong>${escapeHtml(d.offerTitle)}</strong></p>`
+    + `<p class="local-desk-area">${escapeHtml(k.area)}の方（${escapeHtml(k.areaNote)}）</p>`
+    + `<p>${escapeHtml(d.offer)}</p><p>${escapeHtml(d.who)}がお答えします。記事を書いている編集部と同じ運営元です。</p>`
     + `<p><a class="local-desk-button" href="${escapeHtml(d.url)}" rel="noopener" target="_blank">${escapeHtml(d.button)}</a></p>`
+    + `<p class="local-desk-reply">${escapeHtml(d.reply)}</p>`
+    + `<p class="local-desk-monitor">${escapeHtml(d.monitor)}</p>`
     + `<p class="local-desk-outside">${escapeHtml(d.outside)}</p></aside>`;
+}
+
+// 全記事とトップの下に置く信頼の枠（会社名は出さない）。
+export function renderTrust(config) {
+  const t = config.trust;
+  if (!t) return '';
+  return `<aside class="trust-box"><h2>${escapeHtml(t.title)}</h2><ul>${t.items.map((i) => `<li>${escapeHtml(i)}</li>`).join('')}</ul></aside>`;
 }
 
 export function renderPlaceholders(html, links, config, siteUrl) {
@@ -314,6 +324,7 @@ export function renderArticleBody(article, links, config, siteUrl) {
   }
   out += `<p class="price-note">${escapeHtml(config.priceNote)}</p>`;
   out += renderFaq(article.faq);
+  out += renderTrust(config);
   return renderPlaceholders(out, links, config, siteUrl);
 }
 
@@ -468,7 +479,7 @@ export function renderArticleList(articles, siteUrl) {
 
 export function buildHomePage(pageSrc, articles, { config, links, siteUrl, siteUpdated }) {
   const intro = renderPlaceholders(marked.parse(pageSrc.body), links, config, siteUrl);
-  const bodyHtml = `${intro}<section id="sec-articles"><h2>記事一覧</h2>${renderArticleList(articles, siteUrl)}</section>${renderFaq(pageSrc.faq)}`;
+  const bodyHtml = `${intro}<section id="sec-articles"><h2>記事一覧</h2>${renderArticleList(articles, siteUrl)}</section>${renderFaq(pageSrc.faq)}${renderTrust(config)}`;
   const websiteLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
