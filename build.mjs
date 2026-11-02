@@ -215,6 +215,18 @@ export function renderOutside(cluster, links, config) {
   return `<aside class="outside-compare"><h2>${escapeHtml(o.title)}</h2><p>${escapeHtml(o.lead)}</p><ul>${items}</ul></aside>`;
 }
 
+const ICON_DIR = path.join(ROOT, 'node_modules', 'lucide-static', 'icons');
+function icon(name) { const f = path.join(ICON_DIR, `${name}.svg`); return fs.existsSync(f) ? fs.readFileSync(f, 'utf8').replace('<svg', '<svg class="ui-ic" aria-hidden="true"') : ''; }
+// [[steps]] 相談の流れ（3段）・[[pricecards]] 費用の目安カード
+export function renderSteps() {
+  const st = [['camera', '写真を撮る', '困っている所を、スマホで2〜3枚'], ['message-circle', 'LINEで送る', '地域と困りごとを一言そえて'], ['clipboard-check', '目安と応急処置が届く', '費用の幅と、今すぐできる事を無料で']];
+  return `<ol class="ui-steps">${st.map(([ic, h, p], i) => `<li><span class="ui-num">${i + 1}</span>${icon(ic)}<strong>${h}</strong><span>${p}</span></li>`).join('')}</ol>`;
+}
+export function renderPriceCards(config, siteUrl) {
+  const ps = (config.localDesk && config.localDesk.prices) || [];
+  return `<div class="ui-prices">${ps.map((p) => `<a class="ui-price" href="${escapeHtml(siteUrl + p.path)}"><span class="ui-price-t">${escapeHtml(p.trouble)}</span><span class="ui-price-v">${escapeHtml(p.range)}</span></a>`).join('')}</div><p class="small">${escapeHtml(config.localDesk.priceNote)}</p>`;
+}
+
 // 全記事とトップの下に置く信頼の枠（会社名は出さない）。
 export function renderTrust(config) {
   const t = config.trust;
@@ -228,6 +240,8 @@ export function renderPlaceholders(html, links, config, siteUrl) {
   // 段落に写真の札だけがある時は、段落ごと差し替える。
   out = out.replace(/<p>\s*\[\[photo:([^\]]*)\]\]\s*<\/p>/g, (_, spec) => renderPhoto(spec));
   out = out.replace(/\[\[photo:([^\]]*)\]\]/g, (_, spec) => renderPhoto(spec));
+  out = out.replace(/<p>\s*\[\[steps\]\]\s*<\/p>/g, () => renderSteps());
+  out = out.replace(/<p>\s*\[\[pricecards\]\]\s*<\/p>/g, () => renderPriceCards(config, siteUrl));
   out = out.replace(/<p>\s*\[\[desk:([a-z]+)\]\]\s*<\/p>/g, (_, k) => renderDesk(k, config));
   out = out.replace(/\[\[desk:([a-z]+)\]\]/g, (_, k) => renderDesk(k, config));
   out = out.replace(/\[\[link:([a-z0-9-]+)\]\]/g, (_, slug) => renderLink(slug, links, config));
