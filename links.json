@@ -220,5 +220,17 @@
     "kind": "業者紹介",
     "url": "",
     "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "reform-ikkatsu": {
+    "label": "リフォームの一括見積もり",
+    "kind": "業者紹介",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "gaiheki-tosou-hikaku": {
+    "label": "外壁塗装の一括見積もり・比較",
+    "kind": "業者紹介",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
   }
 }

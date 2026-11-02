@@ -167,6 +167,7 @@ export function renderSiteUrl(p, siteUrl) {
 
 
 // [[desk:general]] / [[desk:pest]] → 地域の相談窓口（運営元の施工チーム）。対象地域だけを書き、運営元との関係を明示する。
+let siteUrlForDesk = '';
 export function renderDesk(kind, config) {
   const d = config.localDesk;
   if (!d || !d.url) throw new Error('site.config.json に localDesk.url がありません');
@@ -178,8 +179,40 @@ export function renderDesk(kind, config) {
     + `<p>${escapeHtml(d.offer)}</p><p>${escapeHtml(d.who)}がお答えします。記事を書いている編集部と同じ運営元です。</p>`
     + `<p><a class="local-desk-button" href="${escapeHtml(d.url)}" rel="noopener" target="_blank">${escapeHtml(d.button)}</a></p>`
     + `<p class="local-desk-reply">${escapeHtml(d.reply)}</p>`
+    + (d.nearArea ? `<p class="local-desk-near"><strong>${escapeHtml(d.nearArea)}</strong>：${escapeHtml(d.nearLine)}</p>` : '')
+    + renderDeskExtras(d, siteUrlForDesk)
     + `<p class="local-desk-monitor">${escapeHtml(d.monitor)}</p>`
     + `<p class="local-desk-outside">${escapeHtml(d.outside)}</p></aside>`;
+}
+
+function renderDeskExtras(d, siteUrl) {
+  let out = '';
+  if (d.chat && d.chat.length) {
+    out += `<details class="desk-more"><summary>${escapeHtml(d.chatTitle)}</summary><div class="chat">`
+      + d.chat.map((m) => `<p class="bubble ${m.who === 'you' ? 'you' : 'pro'}"><span class="who">${m.who === 'you' ? 'あなた' : '施工チーム'}</span>${escapeHtml(m.text)}</p>`).join('')
+      + `</div><p class="small">${escapeHtml(d.chatNote)}</p></details>`;
+  }
+  if (d.prices && d.prices.length) {
+    out += `<details class="desk-more"><summary>${escapeHtml(d.priceTitle)}</summary><table class="price-table"><thead><tr><th>困りごと</th><th>費用の目安</th></tr></thead><tbody>`
+      + d.prices.map((p) => `<tr><td><a href="${escapeHtml(siteUrl + p.path)}">${escapeHtml(p.trouble)}</a></td><td>${escapeHtml(p.range)}</td></tr>`).join('')
+      + `</tbody></table><p class="small">${escapeHtml(d.priceNote)}</p></details>`;
+  }
+  if (d.cases && d.cases.length) {
+    out += `<div class="cases"><p><strong>${escapeHtml(d.casesTitle)}</strong></p><ul>`
+      + d.cases.map((k) => `<li><strong>${escapeHtml(k.area || '')}</strong> ${escapeHtml(k.trouble)} → ${escapeHtml(k.work)}（${escapeHtml(k.days)}）</li>`).join('')
+      + `</ul></div>`;
+  }
+  return out;
+}
+
+// 地域外の方への比較枠（ASP の業者紹介。URL は links.json の1行で差し替わる）。
+export function renderOutside(cluster, links, config) {
+  const o = config.outsideCompare;
+  if (!o) return '';
+  const key = Object.keys(o.byCluster).find((k) => String(cluster).includes(k));
+  if (!key) return '';
+  const items = o.byCluster[key].map((slug) => `<li>${renderLink(slug, links, config)}</li>`).join('');
+  return `<aside class="outside-compare"><h2>${escapeHtml(o.title)}</h2><p>${escapeHtml(o.lead)}</p><ul>${items}</ul></aside>`;
 }
 
 // 全記事とトップの下に置く信頼の枠（会社名は出さない）。
@@ -190,6 +223,7 @@ export function renderTrust(config) {
 }
 
 export function renderPlaceholders(html, links, config, siteUrl) {
+  siteUrlForDesk = siteUrl;
   let out = html;
   // 段落に写真の札だけがある時は、段落ごと差し替える。
   out = out.replace(/<p>\s*\[\[photo:([^\]]*)\]\]\s*<\/p>/g, (_, spec) => renderPhoto(spec));
@@ -324,6 +358,7 @@ export function renderArticleBody(article, links, config, siteUrl) {
   }
   out += `<p class="price-note">${escapeHtml(config.priceNote)}</p>`;
   out += renderFaq(article.faq);
+  out += renderOutside(article.cluster, links, config);
   out += renderTrust(config);
   return renderPlaceholders(out, links, config, siteUrl);
 }
@@ -494,6 +529,14 @@ export function buildHomePage(pageSrc, articles, { config, links, siteUrl, siteU
   return { html: renderLayout({ config, siteUrl, page }), outFile: 'index.html' };
 }
 
+export function buildAreaPage(pageSrc, slug, { config, links, siteUrl, siteUpdated }) {
+  const urlPath = `area/${slug}/`;
+  const bodyHtml = `${renderPlaceholders(marked.parse(pageSrc.body), links, config, siteUrl)}${renderFaq(pageSrc.faq)}${renderTrust(config)}`;
+  const ld = { '@context': 'https://schema.org', '@type': 'WebPage', name: pageSrc.title, description: pageSrc.description, url: siteUrl + urlPath, inLanguage: 'ja', publisher: publisher(config, siteUrl) };
+  const page = { kind: 'area', title: pageSrc.title, description: pageSrc.description, updated: pageSrc.updated || siteUpdated, urlPath, bodyHtml, jsonLd: [ld, faqJsonLd(pageSrc.faq)] };
+  return { html: renderLayout({ config, siteUrl, page }), outFile: path.join('area', slug, 'index.html'), urlPath, updated: page.updated };
+}
+
 export function buildAboutPage(pageSrc, { config, links, siteUrl, siteUpdated }) {
   const bodyHtml = `${renderPlaceholders(marked.parse(pageSrc.body), links, config, siteUrl)}${renderFaq(pageSrc.faq)}`;
   const aboutLd = {
@@ -516,11 +559,12 @@ export function buildNotFoundPage(pageSrc, { config, links, siteUrl, siteUpdated
   return { html: renderLayout({ config, siteUrl, page }), outFile: '404.html' };
 }
 
-export function buildSitemap(articles, { config, siteUrl, siteUpdated }) {
+export function buildSitemap(articles, { config, siteUrl, siteUpdated, areaUrls = [] }) {
   const urls = [
     { loc: siteUrl, lastmod: siteUpdated },
     { loc: siteUrl + config.author.path, lastmod: siteUpdated },
     ...articles.map((a) => ({ loc: siteUrl + a.urlPath, lastmod: a.updated })),
+    ...areaUrls,
   ];
   const body = urls.map((u) => `  <url><loc>${escapeXml(u.loc)}</loc><lastmod>${u.lastmod}</lastmod></url>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
@@ -597,7 +641,14 @@ export function build({ siteUrl: rawSiteUrl = process.env.SITE_URL, distDir = PA
   outputs.push({ rel: ab.outFile, content: ab.html });
   const nf = buildNotFoundPage(notFound, ctx);
   outputs.push({ rel: nf.outFile, content: nf.html });
-  outputs.push({ rel: 'sitemap.xml', content: buildSitemap(articles, ctx) });
+  const areaUrls = [];
+  for (const f of fs.readdirSync(PATHS.pages).filter((n) => /^area-[a-z0-9-]+\.md$/.test(n))) {
+    const slug = f.replace(/^area-/, '').replace(/\.md$/, '');
+    const r = buildAreaPage(loadPage(f.replace(/\.md$/, '')), slug, ctx);
+    outputs.push({ rel: r.outFile, content: r.html });
+    areaUrls.push({ loc: siteUrl + r.urlPath, lastmod: r.updated });
+  }
+  outputs.push({ rel: 'sitemap.xml', content: buildSitemap(articles, { ...ctx, areaUrls }) });
   outputs.push({ rel: 'robots.txt', content: buildRobots(siteUrl) });
   outputs.push({ rel: 'feed.xml', content: buildFeed(articles, ctx) });
   outputs.push({ rel: '.nojekyll', content: '' });
