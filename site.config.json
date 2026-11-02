@@ -12,5 +12,19 @@
   "priceNote": "価格は記事作成時点のものです。最新の価格は各販売ページで確かめてください。",
   "linkPendingText": "（リンク準備中）",
   "searchConsoleVerification": "",
-  "ga4MeasurementId": ""
+  "ga4MeasurementId": "",
+  "localDesk": {
+    "url": "https://line.me/R/ti/p/@720lnuik",
+    "general": {
+      "area": "東京都・埼玉県",
+      "areaNote": "窓・断熱・水回り・外壁などの工事"
+    },
+    "pest": {
+      "area": "関東（東京・神奈川・埼玉・千葉・茨城・栃木・群馬）",
+      "areaNote": "害獣の追い出し・入口の封鎖・清掃"
+    },
+    "who": "この編集部の運営元の施工チーム",
+    "button": "公式LINEで相談する",
+    "outside": "それ以外の地域の方は、下の頼み先（一括見積もりなど）を使ってください。"
+  }
 }

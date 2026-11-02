@@ -142,5 +142,59 @@
     "kind": "業者紹介",
     "url": "",
     "note": "高単価案件。地域の決まりは行動書 3.1 を見る"
+  },
+  "kunen-kihizai": {
+    "label": "燻煙式のネズミ忌避剤",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "nenchaku-sheet": {
+    "label": "ネズミ用の粘着シート",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "bouso-kanaami": {
+    "label": "防鼠用の金網（ステンレス）",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "bouso-pate": {
+    "label": "防鼠パテ（隙間埋め）",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "nezumi-kujo-gyosha": {
+    "label": "ネズミ駆除の業者（一括見積もり・紹介）",
+    "kind": "業者紹介",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "shinkuu-pipe-cleaner": {
+    "label": "真空式パイプクリーナー",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "gomu-tebukuro": {
+    "label": "長めのゴム手袋",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "suidou-shuri-gyosha": {
+    "label": "水回りの修理業者（紹介）",
+    "kind": "業者紹介",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+  },
+  "rubber-cup": {
+    "label": "ラバーカップ（洋式用）",
+    "kind": "物販",
+    "url": "",
+    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
   }
 }

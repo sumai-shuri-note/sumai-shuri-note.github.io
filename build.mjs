@@ -165,11 +165,27 @@ export function renderSiteUrl(p, siteUrl) {
   return siteUrl + rel;
 }
 
+
+// [[desk:general]] / [[desk:pest]] → 地域の相談窓口（運営元の施工チーム）。対象地域だけを書き、運営元との関係を明示する。
+export function renderDesk(kind, config) {
+  const d = config.localDesk;
+  if (!d || !d.url) throw new Error('site.config.json に localDesk.url がありません');
+  const k = d[kind];
+  if (!k) throw new Error(`[[desk:${kind}]] は general か pest です`);
+  if (!/^https:\/\//.test(d.url)) throw new Error('localDesk.url は https で始めてください');
+  return `<aside class="local-desk"><p class="local-desk-area"><strong>${escapeHtml(k.area)}の方へ</strong>（${escapeHtml(k.areaNote)}）</p>`
+    + `<p>${escapeHtml(d.who)}が、直接うかがって見ます。記事を書いている編集部と同じ運営元です。</p>`
+    + `<p><a class="local-desk-button" href="${escapeHtml(d.url)}" rel="noopener" target="_blank">${escapeHtml(d.button)}</a></p>`
+    + `<p class="local-desk-outside">${escapeHtml(d.outside)}</p></aside>`;
+}
+
 export function renderPlaceholders(html, links, config, siteUrl) {
   let out = html;
   // 段落に写真の札だけがある時は、段落ごと差し替える。
   out = out.replace(/<p>\s*\[\[photo:([^\]]*)\]\]\s*<\/p>/g, (_, spec) => renderPhoto(spec));
   out = out.replace(/\[\[photo:([^\]]*)\]\]/g, (_, spec) => renderPhoto(spec));
+  out = out.replace(/<p>\s*\[\[desk:([a-z]+)\]\]\s*<\/p>/g, (_, k) => renderDesk(k, config));
+  out = out.replace(/\[\[desk:([a-z]+)\]\]/g, (_, k) => renderDesk(k, config));
   out = out.replace(/\[\[link:([a-z0-9-]+)\]\]/g, (_, slug) => renderLink(slug, links, config));
   out = out.replace(/\[\[site:([^\]]*)\]\]/g, (_, p) => escapeHtml(renderSiteUrl(p, siteUrl)));
   // Markdown のリンク先 `[文](  [[site:xxx]]  )` に書くと marked が [ ] を %5B %5D にするので、その形も受ける。

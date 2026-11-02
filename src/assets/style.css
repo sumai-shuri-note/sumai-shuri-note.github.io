@@ -144,3 +144,11 @@ figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
   }
 }
 @media print { .pr-banner, .site-header nav { display: none; } }
+
+/* 地域の相談窓口（運営元の施工チーム） */
+.local-desk { border: 2px solid #1f6f43; border-radius: 10px; padding: 14px 16px; margin: 18px 0; background: #f3faf5; }
+.local-desk p { margin: 6px 0; }
+.local-desk-area { font-size: 1.05em; }
+.local-desk-button { display: inline-block; background: #06c755; color: #fff; font-weight: 700; padding: 10px 16px; border-radius: 8px; text-decoration: none; }
+.local-desk-outside { font-size: .9em; color: #555; }
+@media (prefers-color-scheme: dark) { .local-desk { background: #12261a; border-color: #3fa86b; } .local-desk-outside { color: #aaa; } }
