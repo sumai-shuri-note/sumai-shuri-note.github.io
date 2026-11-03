@@ -25,7 +25,7 @@ SITE_URL=http://localhost:8787/ npm run build
 npm run serve   # http://localhost:8787/
 ```
 
-`SITE_URL` を付けない時は `https://sumai-shuri-note.github.io/` になります。
+`SITE_URL` を付けない時は `https://sumai-shuri-note.pages.dev/` になります。
 ページの中のリンク・canonical・sitemap はこの URL で書き出します。
 
 ## フォルダ

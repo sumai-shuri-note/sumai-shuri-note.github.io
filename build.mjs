@@ -25,7 +25,7 @@ export const PATHS = {
   dist: path.join(ROOT, 'dist'),
 };
 
-export const DEFAULT_SITE_URL = 'https://sumai-shuri-note.github.io/';
+export const DEFAULT_SITE_URL = 'https://sumai-shuri-note.pages.dev/';
 
 // 記事の型（二択）。この見出しが、この順で必ず要る。
 export const REQUIRED_HEADINGS = ['自分でやるなら、この道具', '頼むなら、ここ', '現場の一言'];

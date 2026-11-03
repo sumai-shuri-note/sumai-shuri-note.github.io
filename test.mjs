@@ -273,13 +273,13 @@ test('sitemap.xml / robots.txt / feed.xml / 404.html / .nojekyll がある', () 
   assert.ok(fs.existsSync(path.join(DIST, '.nojekyll')));
 
   assert.ok(sitemap.startsWith('<?xml'));
-  assert.ok(sitemap.includes('<loc>https://sumai-shuri-note.github.io/</loc>'));
-  assert.ok(sitemap.includes('<loc>https://sumai-shuri-note.github.io/about/</loc>'));
+  assert.ok(sitemap.includes('<loc>https://sumai-shuri-note.pages.dev/</loc>'));
+  assert.ok(sitemap.includes('<loc>https://sumai-shuri-note.pages.dev/about/</loc>'));
   for (const a of articles) {
-    assert.ok(sitemap.includes(`<loc>https://sumai-shuri-note.github.io/articles/${a.slug}/</loc>`), `sitemap: ${a.slug}`);
-    assert.ok(feed.includes(`<link>https://sumai-shuri-note.github.io/articles/${a.slug}/</link>`), `feed: ${a.slug}`);
+    assert.ok(sitemap.includes(`<loc>https://sumai-shuri-note.pages.dev/articles/${a.slug}/</loc>`), `sitemap: ${a.slug}`);
+    assert.ok(feed.includes(`<link>https://sumai-shuri-note.pages.dev/articles/${a.slug}/</link>`), `feed: ${a.slug}`);
   }
-  assert.ok(robots.includes('Sitemap: https://sumai-shuri-note.github.io/sitemap.xml'));
+  assert.ok(robots.includes('Sitemap: https://sumai-shuri-note.pages.dev/sitemap.xml'));
   assert.ok(feed.includes('<rss version="2.0"'));
   assert.equal((feed.match(/<item>/g) || []).length, articles.length);
   assert.ok(nf.includes('<meta name="robots" content="noindex">'));
@@ -293,7 +293,7 @@ test('編集部ページがあり、著者の構造化データが編集部ペ�
   for (const a of articles) {
     const html = read(path.join(DIST, 'articles', a.slug, 'index.html'));
     const art = jsonLdBlocks(html).find((b) => b['@type'] === 'Article');
-    assert.equal(art.author.url, 'https://sumai-shuri-note.github.io/' + config.author.path);
+    assert.equal(art.author.url, 'https://sumai-shuri-note.pages.dev/' + config.author.path);
   }
 });
 
