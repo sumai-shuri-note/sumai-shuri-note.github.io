@@ -18,6 +18,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import {
+  OPERATOR_NAME, OPERATOR_ALLOWED,
   PATHS,
   REQUIRED_HEADINGS,
   build,
@@ -171,7 +172,9 @@ test('dist/ に出してはならない語が無い', () => {
   const files = walk(DIST).filter((f) => !/\.(png|jpe?g|gif|webp|ico|woff2?)$/i.test(f));
   assert.ok(files.length > 0);
   for (const f of files) {
-    const hits = findForbidden(read(f));
+    const rel0 = path.relative(DIST, f).split(path.sep).join('/');
+    const body0 = OPERATOR_ALLOWED.has(rel0) ? read(f).split(OPERATOR_NAME).join('') : read(f);
+    const hits = findForbidden(body0);
     assert.equal(hits.length, 0, `${path.relative(DIST, f)}: 禁止語 ${hits.map((h) => h.sample).join(', ')}`);
   }
 });
@@ -184,7 +187,9 @@ test('原稿・設定・README にも出してはならない語が無い', () =
   });
   assert.ok(files.length > 10, `見た数 ${files.length}`);
   for (const f of files) {
-    const hits = findForbidden(read(f));
+    const rel1 = path.relative(ROOT, f).split(path.sep).join('/');
+    const body1 = OPERATOR_ALLOWED.has(rel1) ? read(f).split(OPERATOR_NAME).join('') : read(f);
+    const hits = findForbidden(body1);
     assert.equal(hits.length, 0, `${path.relative(ROOT, f)}: 禁止語 ${hits.map((h) => h.sample).join(', ')}`);
   }
 });

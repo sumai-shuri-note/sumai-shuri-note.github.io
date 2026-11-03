@@ -142,7 +142,15 @@
     "kind": "業者紹介",
     "url": "https://px.a8.net/svt/ejp?a8mat=4BGCEZ+83QF76+39GM+ZQ80I",
     "note": "A8 s00000015223006 提携2026-11-03",
-    "pixel": "https://www15.a8.net/0.gif?a8mat=4BGCEZ+83QF76+39GM+ZQ80I"
+    "pixel": "https://www15.a8.net/0.gif?a8mat=4BGCEZ+83QF76+39GM+ZQ80I",
+    "compare": {
+      "rank": 2,
+      "name": "害獣駆除110番",
+      "speed": "電話は24時間365日",
+      "free": "現地調査・見積もり無料（地域・現場により有料の場合あり）",
+      "warranty": "公式サイトに記載なし",
+      "cta": "見積もりを依頼する"
+    }
   },
   "kunen-kihizai": {
     "label": "燻煙式のネズミ忌避剤",
@@ -173,7 +181,15 @@
     "kind": "業者紹介",
     "url": "https://px.a8.net/svt/ejp?a8mat=4BGCEZ+84BUSY+4QDW+5YRHE",
     "note": "A8 s00000022082001 提携2026-11-03",
-    "pixel": "https://www12.a8.net/0.gif?a8mat=4BGCEZ+84BUSY+4QDW+5YRHE"
+    "pixel": "https://www12.a8.net/0.gif?a8mat=4BGCEZ+84BUSY+4QDW+5YRHE",
+    "compare": {
+      "rank": 1,
+      "name": "ハウスプロテクト",
+      "speed": "24時間受付・年中無休",
+      "free": "調査・見積もり・出張費 0円",
+      "warranty": "最長10年（築年数・工事の中身で変わる）",
+      "cta": "無料の調査を申し込む"
+    }
   },
   "shinkuu-pipe-cleaner": {
     "label": "真空式パイプクリーナー",
@@ -234,7 +250,15 @@
     "kind": "業者紹介",
     "url": "https://px.a8.net/svt/ejp?a8mat=4BGCEZ+75SPPU+410U+60OXE",
     "note": "A8 s00000018795001 提携2026-11-03",
-    "pixel": "https://www15.a8.net/0.gif?a8mat=4BGCEZ+75SPPU+410U+60OXE"
+    "pixel": "https://www15.a8.net/0.gif?a8mat=4BGCEZ+75SPPU+410U+60OXE",
+    "compare": {
+      "rank": 1,
+      "name": "ヌリカエ",
+      "speed": "電話 10〜19時・LINEで相談",
+      "free": "相談は何度でも無料",
+      "warranty": "公式サイトに記載なし",
+      "cta": "無料で相場と業者を比べる"
+    }
   },
   "crack-scale": {
     "label": "クラックスケール",

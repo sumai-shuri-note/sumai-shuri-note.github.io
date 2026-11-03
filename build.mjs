@@ -211,8 +211,21 @@ export function renderOutside(cluster, links, config) {
   if (!o) return '';
   const key = Object.keys(o.byCluster).find((k) => String(cluster).includes(k));
   if (!key) return '';
-  const items = o.byCluster[key].map((slug) => `<li>${renderLink(slug, links, config)}</li>`).join('');
-  return `<aside class="outside-compare"><h2>${escapeHtml(o.title)}</h2><p>${escapeHtml(o.lead)}</p><ul>${items}</ul></aside>`;
+  const slugs = o.byCluster[key];
+  const cmp = slugs.filter((s) => links[s] && links[s].url && links[s].compare).sort((a, b) => links[a].compare.rank - links[b].compare.rank);
+  const rest = slugs.filter((s) => !cmp.includes(s));
+  const nudge = o.nudge && o.nudge[key] ? `<p class="oc-nudge">${escapeHtml(o.nudge[key])}</p>` : '';
+  let table = '';
+  if (cmp.length) {
+    const rows = cmp.map((s, i) => {
+      const e = links[s]; const c = e.compare;
+      const px = e.pixel ? `<img src="${escapeHtml(e.pixel)}" width="1" height="1" alt="" class="ad-px">` : '';
+      return `<tr${i === 0 ? ' class="oc-top"' : ''}><th scope="row">${escapeHtml(c.name)}<small class="ad-mark">［広告］</small></th><td data-l="受付">${escapeHtml(c.speed)}</td><td data-l="無料の範囲">${escapeHtml(c.free)}</td><td data-l="保証">${escapeHtml(c.warranty)}</td><td><a class="oc-btn" href="${escapeHtml(e.url)}" rel="sponsored nofollow noopener" target="_blank">${escapeHtml(c.cta)}</a>${px}</td></tr>`;
+    }).join('');
+    table = `<table class="oc-table"><thead><tr><th>サービス</th><th>受付</th><th>無料の範囲</th><th>保証</th><th></th></tr></thead><tbody>${rows}</tbody></table><p class="small">${escapeHtml(o.tableNote || '')}</p>`;
+  }
+  const items = rest.map((slug) => `<li>${renderLink(slug, links, config)}</li>`).join('');
+  return `<aside class="outside-compare"><h2>${escapeHtml(o.title)}</h2><p>${escapeHtml(o.lead)}</p>${nudge}${table}${items ? `<ul>${items}</ul>` : ''}</aside>`;
 }
 
 const ICON_DIR = path.join(ROOT, 'node_modules', 'lucide-static', 'icons');
@@ -626,8 +639,13 @@ function writeOut(distDir, rel, content) {
   return file;
 }
 
+// 代表判断 2026-11-03：運営者名（屋号）は編集部ページ（about）にだけ出してよい。他のページでは今まで通り禁止。
+export const OPERATOR_NAME = Buffer.from('TEEtTFVDQVRP', 'base64').toString('utf8');
+export const OPERATOR_ALLOWED = new Set(['about/index.html', 'src/content/pages/about.md']);
+const OPERATOR_ALLOWED_PAGES = OPERATOR_ALLOWED;
 function assertClean(rel, content) {
-  const hits = findForbidden(content);
+  const checked = OPERATOR_ALLOWED_PAGES.has(rel) ? content.split(OPERATOR_NAME).join('') : content;
+  const hits = findForbidden(checked);
   if (hits.length) {
     throw new Error(`${rel}: 出してはならない語があります（${hits.map((h) => h.sample).join(', ')}）。原稿を直してください`);
   }

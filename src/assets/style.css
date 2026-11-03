@@ -180,3 +180,10 @@ body{padding-bottom:84px}
 .ad-px{border:0;position:absolute;width:1px;height:1px;opacity:0}
 
 @media (prefers-color-scheme: dark){.trust-box{background:#1b1f24;border-color:#444}.outside-compare{background:#241d10;border-color:#c9a14a}.trust-box,.outside-compare{color:#e6e6e6}}
+
+.oc-nudge{font-weight:700;border-left:4px solid #c9a14a;padding:6px 10px;margin:10px 0}
+.oc-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.92em}
+.oc-table th,.oc-table td{border-bottom:1px solid #d9c9a3;padding:8px 6px;text-align:left;vertical-align:top}
+.oc-table tr.oc-top{background:rgba(201,161,74,.15)}
+.oc-btn{display:inline-block;background:#d9480f;color:#fff!important;font-weight:700;padding:8px 12px;border-radius:8px;text-decoration:none;white-space:nowrap}
+@media (max-width:640px){.oc-table thead{display:none}.oc-table tr{display:block;border-bottom:1px solid #d9c9a3;padding:6px 0}.oc-table th,.oc-table td{display:block;border:0;padding:3px 4px}.oc-table td[data-l]::before{content:attr(data-l)"：";font-weight:700}}
