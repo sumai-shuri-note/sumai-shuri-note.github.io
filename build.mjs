@@ -685,6 +685,11 @@ export function build({ siteUrl: rawSiteUrl = process.env.SITE_URL, distDir = PA
   outputs.push({ rel: 'robots.txt', content: buildRobots(siteUrl) });
   outputs.push({ rel: 'feed.xml', content: buildFeed(articles, ctx) });
   outputs.push({ rel: '.nojekyll', content: '' });
+  // Search Console の所有確認ファイル（中身は Google が決めた 1 行。秘密ではない）。
+  for (const name of config.googleVerificationFiles || []) {
+    if (!/^google[0-9a-f]+\.html$/.test(name)) throw new Error(`googleVerificationFiles の名前が変です: ${name}`);
+    outputs.push({ rel: name, content: `google-site-verification: ${name}` });
+  }
 
   // 全部そろってから書く（途中で失敗した時に半端な dist/ を残さない）。
   for (const o of outputs) assertClean(o.rel, o.content);

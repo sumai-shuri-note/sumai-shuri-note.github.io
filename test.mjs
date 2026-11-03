@@ -46,7 +46,8 @@ const CHAR_MAX = 2000;
 const CSS_MAX_BYTES = 10 * 1024;
 
 function htmlFiles(dir) {
-  return walk(dir).filter((f) => f.endsWith('.html'));
+  // Search Console の確認ファイル（google*.html）は記事ではないので外す。
+  return walk(dir).filter((f) => f.endsWith('.html') && !/^google[0-9a-f]+\.html$/.test(path.basename(f)));
 }
 
 function read(f) {
