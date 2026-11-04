@@ -67,6 +67,8 @@ faq:
 
 [[desk:pest]]
 
+市の窓口（水道・粗大ごみ・害獣）：[所沢市]([[site:area/tokorozawa/]])・[入間市]([[site:area/iruma/]])・[狭山市]([[site:area/sayama/]])・[川越市]([[site:area/kawagoe/]])
+
 頼み先：[[link:gaiju-kujo-gyosha]]
 
 ## 現場の一言

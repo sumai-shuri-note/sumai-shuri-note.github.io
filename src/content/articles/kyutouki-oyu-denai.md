@@ -89,6 +89,8 @@ faq:
 
 [[desk:general]]
 
+市の窓口（水道・粗大ごみ・害獣）：[所沢市]([[site:area/tokorozawa/]])・[入間市]([[site:area/iruma/]])・[狭山市]([[site:area/sayama/]])・[川越市]([[site:area/kawagoe/]])
+
 頼み先：[[link:kyutouki-koukan]]
 
 交換費用：[種類別の相場]([[site:articles/kyutouki-koukan-hiyou/]])
