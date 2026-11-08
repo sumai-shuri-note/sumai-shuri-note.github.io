@@ -433,6 +433,7 @@ export function renderLayout({ config, siteUrl, page }) {
     config.searchConsoleVerification
       ? `<meta name="google-site-verification" content="${escapeHtml(config.searchConsoleVerification)}">`
       : '',
+    config.bingSiteAuth ? `<meta name="msvalidate.01" content="${escapeHtml(config.bingSiteAuth)}">` : '',
     config.ga4MeasurementId ? ga4Snippet(config.ga4MeasurementId) : '',
     ...page.jsonLd.map(jsonLd),
   ]
