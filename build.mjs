@@ -690,6 +690,11 @@ export function build({ siteUrl: rawSiteUrl = process.env.SITE_URL, distDir = PA
     if (!/^google[0-9a-f]+\.html$/.test(name)) throw new Error(`googleVerificationFiles の名前が変です: ${name}`);
     outputs.push({ rel: name, content: `google-site-verification: ${name}` });
   }
+  // IndexNow（Bing など）の鍵ファイル。鍵は公開して使う物で、秘密ではない。
+  if (config.indexNowKey) {
+    if (!/^[0-9a-f]{32}$/.test(config.indexNowKey)) throw new Error('indexNowKey は 32 桁の 16 進数にする');
+    outputs.push({ rel: `${config.indexNowKey}.txt`, content: config.indexNowKey });
+  }
 
   // 全部そろってから書く（途中で失敗した時に半端な dist/ を残さない）。
   for (const o of outputs) assertClean(o.rel, o.content);

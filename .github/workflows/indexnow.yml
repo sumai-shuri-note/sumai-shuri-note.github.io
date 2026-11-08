@@ -1,0 +1,46 @@
+name: indexnow
+on:
+  push:
+    branches: [main]
+    paths: ['src/content/**', 'site.config.json', 'links.json']
+  workflow_dispatch:
+    inputs:
+      all:
+        description: 'send every URL in the sitemap'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: wait for Cloudflare Pages
+        if: github.event_name == 'push'
+        run: sleep 240
+      - name: send to IndexNow
+        env:
+          ALL: ${{ github.event.inputs.all }}
+        run: |
+          node - <<'JS'
+          const fs = require('fs');
+          const cfg = JSON.parse(fs.readFileSync('site.config.json', 'utf8'));
+          const key = cfg.indexNowKey;
+          const site = 'https://sumai-shuri-note.pages.dev/';
+          (async () => {
+            const kr = await fetch(site + key + '.txt');
+            const kt = (await kr.text()).trim();
+            if (kr.status !== 200 || kt !== key) { console.log('key file not live yet', kr.status); process.exit(1); }
+            const sm = await (await fetch(site + 'sitemap.xml')).text();
+            const items = [...sm.matchAll(/<loc>([^<]+)<\/loc><lastmod>([^<]+)<\/lastmod>/g)].map(m => ({ loc: m[1], lastmod: m[2] }));
+            const today = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+            const urls = (process.env.ALL === 'true' ? items : items.filter(i => i.lastmod >= today)).map(i => i.loc);
+            if (urls.length === 0) { console.log('no changed URL today'); return; }
+            const body = { host: 'sumai-shuri-note.pages.dev', key, keyLocation: site + key + '.txt', urlList: urls };
+            const r = await fetch('https://api.indexnow.org/indexnow', { method: 'POST', headers: { 'content-type': 'application/json; charset=utf-8' }, body: JSON.stringify(body) });
+            console.log('IndexNow', r.status, urls.length, 'URLs');
+            urls.forEach(u => console.log(' ', u));
+            if (r.status >= 400) process.exit(1);
+          })();
+          JS
