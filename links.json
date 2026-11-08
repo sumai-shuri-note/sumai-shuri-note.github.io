@@ -234,16 +234,34 @@
     "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
   },
   "kyutouki-koukan": {
-    "label": "給湯器の交換・修理の業者（一括見積もり）",
+    "label": "お湯が出ない.com（給湯器の修理・交換）",
     "kind": "業者紹介",
-    "url": "",
-    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+    "url": "https://px.a8.net/svt/ejp?a8mat=4BGCEZ+71MOHE+3EMG+5MFLEA",
+    "note": "A8 s00000015892034 提携2026-11-04。成果は東京都・神奈川県のみ（A8成果条件）。公式 oyu-denai.com 2026-11-08確認",
+    "pixel": "https://www12.a8.net/0.gif?a8mat=4BGCEZ+71MOHE+3EMG+5MFLEA",
+    "compare": {
+      "rank": 1,
+      "name": "お湯が出ない.com（東京・神奈川・埼玉・千葉）",
+      "speed": "電話 9〜21時・年中無休",
+      "free": "診断・見積もり・出張費 無料",
+      "warranty": "工事10年（内容で変わる）",
+      "cta": "無料で見積もりを頼む"
+    }
   },
   "reform-ikkatsu": {
-    "label": "リフォームの一括見積もり",
+    "label": "Re:est（ニッカホームのリフォーム簡単見積もり）",
     "kind": "業者紹介",
-    "url": "",
-    "note": "ASP の提携が通ったら計測つきリンクを url に入れる"
+    "url": "https://px.a8.net/svt/ejp?a8mat=4BGCEZ+77L0J6+5UT6+5YJRM",
+    "note": "A8 s00000027321001 提携2026-11。成果はWeb申込のみ（電話は対象外）・本見積15万円超・ニッカホームの対応エリア。公式 reest.jp/about 2026-11-08確認",
+    "pixel": "https://www13.a8.net/0.gif?a8mat=4BGCEZ+77L0J6+5UT6+5YJRM",
+    "compare": {
+      "rank": 2,
+      "name": "Re:est（ニッカホーム運営）",
+      "speed": "Webフォーム（電話 8:30〜20時）",
+      "free": "見積もり・現場調査・出張費 無料",
+      "warranty": "公式サイトに記載なし",
+      "cta": "Webで無料見積もり"
+    }
   },
   "gaiheki-tosou-hikaku": {
     "label": "ヌリカエ（外壁塗装の適正価格と業者の比較）",
