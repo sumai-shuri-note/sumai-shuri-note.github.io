@@ -6,7 +6,7 @@ workType: 防水
 days: 外壁・屋根塗装・板金交換とあわせて約1か月
 hitokoto: 傷んだ防水層を、ウレタン防水の密着工法でやり直しました。
 updated: 2026-11-10
-ready: false
+ready: true
 ---
 
 [[photo:施工前のベランダ。防水層にひび割れと剥がれが出ています|assets/cases/veranda-bousui-before.jpg]]

@@ -6,7 +6,7 @@ workType: 屋根
 days: 外壁塗装・ベランダ防水・板金交換とあわせて約1か月
 hitokoto: 色あせてコケの出た屋根を塗り替えました。
 updated: 2026-11-10
-ready: false
+ready: true
 ---
 
 [[photo:施工前の屋根。色あせて、表面に白っぽさやコケが出ています|assets/cases/yane-tosou-before.jpg]]

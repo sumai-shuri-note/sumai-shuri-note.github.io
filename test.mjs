@@ -111,6 +111,8 @@ test('全 HTML に FAQPage の構造化データ（3問）と、見える FAQ �
   for (const f of htmlFiles(DIST)) {
     const html = read(f);
     const rel = path.relative(DIST, f);
+    // 施工事例（一覧・各事例）は施工前後の写真が主役で、無理にFAQを作文しない。FAQ必須の対象外。
+    if (rel === 'cases/index.html' || rel.startsWith('cases/')) continue;
     const blocks = jsonLdBlocks(html);
     const faq = blocks.find((b) => b['@type'] === 'FAQPage');
     assert.ok(faq, `${rel}: FAQPage がある`);
