@@ -22,8 +22,12 @@ export const PATHS = {
   assets: path.join(ROOT, 'src', 'assets'),
   articles: path.join(ROOT, 'src', 'content', 'articles'),
   pages: path.join(ROOT, 'src', 'content', 'pages'),
+  cases: path.join(ROOT, 'src', 'content', 'cases'),
   dist: path.join(ROOT, 'dist'),
 };
+
+// 施工事例で使ってよい工事の種類（確認表に合わせる）。
+export const CASE_WORK_TYPES = ['外壁', '屋根', '水回り', '内装', 'フルリノベ', '外構', '防水'];
 
 export const DEFAULT_SITE_URL = 'https://sumai-shuri-note.pages.dev/';
 
@@ -341,6 +345,64 @@ export function loadPage(name, dir = PATHS.pages) {
   return { name, title: String(data.title), description: String(data.description), updated, faq: data.faq, body: content };
 }
 
+// 本文に本物の写真（[[photo:…|assets/…]]）が1枚でもあるか。準備中の枠だけなら false。
+export function hasRealPhoto(markdown) {
+  return /\[\[photo:[^\]]*\|\s*assets\//.test(String(markdown));
+}
+
+// 施工事例の読み込み。
+// 原則（文字だけの紙芝居は出さない）: ready:true かつ本物の写真が1枚以上ある物だけを公開する。
+// どちらか欠ける物は「準備中」として外す（サイト全体のビルドは止めない＝fail-closed で非公開側に倒す）。
+export function loadCases(dir = PATHS.cases, { log = () => {} } = {}) {
+  if (!fs.existsSync(dir)) return [];
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.md')).sort();
+  const cases = [];
+  const seen = new Set();
+  for (const f of files) {
+    const { data, content, file } = readMarkdown(path.join(dir, f));
+    const where = path.relative(PATHS.root, file);
+    for (const k of ['title', 'description', 'area', 'workType', 'days', 'updated']) {
+      if (data[k] == null || data[k] === '') throw new Error(`${where}: front matter に ${k} がありません`);
+    }
+    const workType = String(data.workType);
+    if (!CASE_WORK_TYPES.includes(workType)) {
+      throw new Error(`${where}: workType は ${CASE_WORK_TYPES.join('・')} のどれかにしてください（今「${workType}」）`);
+    }
+    const slug = data.slug || f.replace(/\.md$/, '');
+    if (!/^[a-z0-9-]+$/.test(slug)) throw new Error(`${where}: slug は英小文字・数字・ハイフンだけにしてください`);
+    if (seen.has(slug)) throw new Error(`${where}: slug「${slug}」が重なっています`);
+    seen.add(slug);
+    const updated = toIsoDate(data.updated);
+    if (!isIsoDate(updated)) throw new Error(`${where}: updated は YYYY-MM-DD で書いてください`);
+    if (data.faq != null) validateFaq(data.faq, where);
+    // 掲載ゲート: ready と本物の写真の両方がそろって初めて公開する。
+    const ready = data.ready === true;
+    const real = hasRealPhoto(content);
+    if (!ready || !real) {
+      const why = !ready ? 'ready:true がまだ' : '本物の写真がまだ';
+      log(`施工事例 ${slug}: 準備中のため非公開（${why}）`);
+      continue;
+    }
+    cases.push({
+      kind: 'case',
+      slug,
+      title: String(data.title),
+      description: String(data.description),
+      area: String(data.area),
+      workType,
+      days: String(data.days),
+      hitokoto: data.hitokoto ? String(data.hitokoto) : '',
+      updated,
+      faq: data.faq || null,
+      body: content,
+      sourceFile: where,
+      urlPath: `cases/${slug}/`,
+    });
+  }
+  cases.sort((a, b) => (b.updated.localeCompare(a.updated) || a.slug.localeCompare(b.slug)));
+  return cases;
+}
+
 // ---------- 記事本文（二択の型）の組み立て ----------
 
 export function splitSections(markdown) {
@@ -455,7 +517,7 @@ ${head}
 <p class="pr-banner">${escapeHtml(config.prBanner)}</p>
 <header class="site-header">
 <a class="brand" href="${siteUrl}">${escapeHtml(config.siteName)}</a>
-<nav><a href="${siteUrl}">記事一覧</a><a href="${aboutUrl}">編集部について</a><a href="${siteUrl}feed.xml">RSS</a></nav>
+<nav><a href="${siteUrl}">記事一覧</a>${config.showCasesNav ? `<a href="${siteUrl}cases/">施工事例</a>` : ''}<a href="${aboutUrl}">編集部について</a><a href="${siteUrl}feed.xml">RSS</a></nav>
 </header>
 <main>
 <article>
@@ -588,12 +650,83 @@ export function buildNotFoundPage(pageSrc, { config, links, siteUrl, siteUpdated
   return { html: renderLayout({ config, siteUrl, page }), outFile: '404.html' };
 }
 
-export function buildSitemap(articles, { config, siteUrl, siteUpdated, areaUrls = [] }) {
+// 本文の最初の本物の写真の src（assets/…）を取り出す。一覧カードのサムネイルに使う。
+export function firstPhotoSrc(markdown) {
+  const m = String(markdown).match(/\[\[photo:[^\]|]*\|\s*(assets\/[A-Za-z0-9_./-]+)\s*\]\]/);
+  return m ? m[1] : '';
+}
+
+export function buildCasePage(caseItem, { config, links, siteUrl, siteUpdated }) {
+  const urlPath = caseItem.urlPath;
+  const canonical = siteUrl + urlPath;
+  const meta = `<p class="case-meta"><span class="cluster-tag">${escapeHtml(caseItem.workType)}</span>`
+    + `<span class="case-area">${escapeHtml(caseItem.area)}</span>`
+    + `<span class="case-days">工期の目安：${escapeHtml(caseItem.days)}</span></p>`;
+  const bodyInner = renderPlaceholders(marked.parse(caseItem.body), links, config, siteUrl);
+  const faqHtml = caseItem.faq ? renderFaq(caseItem.faq) : '';
+  const backLink = `<p class="case-back"><a href="${siteUrl}cases/">← 施工事例の一覧へ</a></p>`;
+  const bodyHtml = `${meta}${bodyInner}${faqHtml}${renderTrust(config)}${backLink}`;
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: caseItem.title,
+    description: caseItem.description,
+    dateModified: caseItem.updated,
+    inLanguage: 'ja',
+    articleSection: caseItem.workType,
+    author: orgAuthor(config, siteUrl),
+    publisher: publisher(config, siteUrl),
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+  };
+  const breadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: config.siteName, item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: '施工事例', item: siteUrl + 'cases/' },
+      { '@type': 'ListItem', position: 3, name: caseItem.title, item: canonical },
+    ],
+  };
+  const jsonLd = [ld, breadcrumb];
+  if (caseItem.faq) jsonLd.push(faqJsonLd(caseItem.faq));
+  const page = { kind: 'case', title: caseItem.title, description: caseItem.description, updated: caseItem.updated, urlPath, bodyHtml, jsonLd };
+  return { html: renderLayout({ config, siteUrl, page }), outFile: path.join('cases', caseItem.slug, 'index.html'), urlPath, updated: caseItem.updated };
+}
+
+export function renderCaseList(cases, siteUrl) {
+  if (!cases.length) return '<p>施工事例は準備中です。写真がそろい次第、順番に載せていきます。</p>';
+  const items = cases.map((c) => {
+    const src = firstPhotoSrc(c.body);
+    const thumb = src
+      ? `<img class="case-card-img" src="${siteUrl}${escapeHtml(src)}" alt="${escapeHtml(c.title)}" loading="lazy">`
+      : '';
+    const hitokoto = c.hitokoto ? `<span class="case-card-hitokoto">${escapeHtml(c.hitokoto)}</span>` : `<span class="case-card-hitokoto">${escapeHtml(c.description)}</span>`;
+    return `<li class="case-card"><a href="${siteUrl}${c.urlPath}">${thumb}<span class="case-card-body">`
+      + `<span class="case-card-tags"><span class="cluster-tag">${escapeHtml(c.workType)}</span><span class="case-area">${escapeHtml(c.area)}</span></span>`
+      + `<span class="case-card-title">${escapeHtml(c.title)}</span>${hitokoto}`
+      + `<span class="case-days">工期の目安：${escapeHtml(c.days)}</span></span></a></li>`;
+  }).join('');
+  return `<ul class="case-list">${items}</ul>`;
+}
+
+export function buildCaseListPage(cases, { config, links, siteUrl, siteUpdated }) {
+  const title = '施工事例';
+  const description = '実際に行った住まいの修理・リフォームの事例です。施工前と施工後の写真つきで、工事の内容と工期の目安を紹介します。';
+  const lead = `<div class="lead"><p>実際に行った工事を、施工前と施工後の写真つきで紹介します。見た目だけでなく、工期の目安や、現場でこだわった点もあわせて載せています。</p></div>`;
+  const bodyHtml = `${lead}<section id="sec-cases">${renderCaseList(cases, siteUrl)}</section>${renderTrust(config)}`;
+  const updated = cases[0] ? cases[0].updated : siteUpdated;
+  const ld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: title, description, url: siteUrl + 'cases/', inLanguage: 'ja', publisher: publisher(config, siteUrl) };
+  const page = { kind: 'cases', title, description, updated, urlPath: 'cases/', bodyHtml, jsonLd: [ld] };
+  return { html: renderLayout({ config, siteUrl, page }), outFile: path.join('cases', 'index.html'), urlPath: 'cases/', updated };
+}
+
+export function buildSitemap(articles, { config, siteUrl, siteUpdated, areaUrls = [], caseUrls = [] }) {
   const urls = [
     { loc: siteUrl, lastmod: siteUpdated },
     { loc: siteUrl + config.author.path, lastmod: siteUpdated },
     ...articles.map((a) => ({ loc: siteUrl + a.urlPath, lastmod: a.updated })),
     ...areaUrls,
+    ...caseUrls,
   ];
   const body = urls.map((u) => `  <url><loc>${escapeXml(u.loc)}</loc><lastmod>${u.lastmod}</lastmod></url>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
@@ -660,7 +793,10 @@ export function build({ siteUrl: rawSiteUrl = process.env.SITE_URL, distDir = PA
   const home = loadPage('index');
   const about = loadPage('about');
   const notFound = loadPage('404');
-  const dates = [...articles.map((a) => a.updated), home.updated, about.updated].filter(Boolean).sort();
+  const cases = loadCases(PATHS.cases, { log });
+  // 公開できる施工事例が1本以上ある時だけ、ナビに「施工事例」を出す。
+  config.showCasesNav = cases.length > 0;
+  const dates = [...articles.map((a) => a.updated), ...cases.map((c) => c.updated), home.updated, about.updated].filter(Boolean).sort();
   const siteUpdated = dates[dates.length - 1] || '1970-01-01';
   const ctx = { config, links, siteUrl, siteUpdated };
 
@@ -682,7 +818,18 @@ export function build({ siteUrl: rawSiteUrl = process.env.SITE_URL, distDir = PA
     outputs.push({ rel: r.outFile, content: r.html });
     areaUrls.push({ loc: siteUrl + r.urlPath, lastmod: r.updated });
   }
-  outputs.push({ rel: 'sitemap.xml', content: buildSitemap(articles, { ...ctx, areaUrls }) });
+  const caseUrls = [];
+  if (cases.length) {
+    for (const c of cases) {
+      const r = buildCasePage(c, ctx);
+      outputs.push({ rel: r.outFile, content: r.html });
+      caseUrls.push({ loc: siteUrl + r.urlPath, lastmod: r.updated });
+    }
+    const cl = buildCaseListPage(cases, ctx);
+    outputs.push({ rel: cl.outFile, content: cl.html });
+    caseUrls.push({ loc: siteUrl + cl.urlPath, lastmod: cl.updated });
+  }
+  outputs.push({ rel: 'sitemap.xml', content: buildSitemap(articles, { ...ctx, areaUrls, caseUrls }) });
   outputs.push({ rel: 'robots.txt', content: buildRobots(siteUrl) });
   outputs.push({ rel: 'feed.xml', content: buildFeed(articles, ctx) });
   outputs.push({ rel: '.nojekyll', content: '' });

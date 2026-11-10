@@ -43,7 +43,9 @@ const articles = loadArticles();
 
 const CHAR_MIN = 1200;
 const CHAR_MAX = 2000;
-const CSS_MAX_BYTES = 10 * 1024;
+// CSS は1枚で読み込みを速く保つための上限（工学ガードレール）。
+// 2026-11-10: 施工事例（一覧カード・事例ページ）の追加で 10KB では収まらなくなったため 12KB に引き上げ。
+const CSS_MAX_BYTES = 12 * 1024;
 
 function htmlFiles(dir) {
   // Search Console の確認ファイル（google*.html）は記事ではないので外す。
