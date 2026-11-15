@@ -604,9 +604,12 @@ export function renderArticleList(articles, siteUrl) {
   return `<ul class="article-list">${items}</ul>`;
 }
 
-export function buildHomePage(pageSrc, articles, { config, links, siteUrl, siteUpdated }) {
+export function buildHomePage(pageSrc, articles, { config, links, siteUrl, siteUpdated, cases = [] }) {
   const intro = renderPlaceholders(marked.parse(pageSrc.body), links, config, siteUrl);
-  const bodyHtml = `${intro}<section id="sec-articles"><h2>記事一覧</h2>${renderArticleList(articles, siteUrl)}</section>${renderFaq(pageSrc.faq)}${renderTrust(config)}`;
+  const casesSection = cases.length
+    ? `<section id="sec-cases"><h2>施工事例</h2>${renderCaseList(cases, siteUrl)}<p class="more-link"><a href="${siteUrl}cases/">施工事例の一覧を見る →</a></p></section>`
+    : '';
+  const bodyHtml = `${intro}${casesSection}<section id="sec-articles"><h2>記事一覧</h2>${renderArticleList(articles, siteUrl)}</section>${renderFaq(pageSrc.faq)}${renderTrust(config)}`;
   const websiteLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -798,7 +801,7 @@ export function build({ siteUrl: rawSiteUrl = process.env.SITE_URL, distDir = PA
   config.showCasesNav = cases.length > 0;
   const dates = [...articles.map((a) => a.updated), ...cases.map((c) => c.updated), home.updated, about.updated].filter(Boolean).sort();
   const siteUpdated = dates[dates.length - 1] || '1970-01-01';
-  const ctx = { config, links, siteUrl, siteUpdated };
+  const ctx = { config, links, siteUrl, siteUpdated, cases };
 
   const outputs = [];
   for (const a of articles) {
